@@ -1,2 +1,2 @@
 # playbook
-Neuron network constructor and trainer
+Neural network constructor and trainer

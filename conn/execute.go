@@ -1,7 +1,6 @@
 package conn
 
 import (
-	"bytes"
 	"fmt"
 	"strings"
 
@@ -13,12 +12,21 @@ func execute(client *ssh.Client, command string) string {
 	session, err := client.NewSession()
 	util.Check(err)
 	defer session.Close()
-	var b bytes.Buffer
-	session.Stdout = &b
-	//session.Stderr = &b
-	err = session.Run(command)
+
+	/*
+		var b bytes.Buffer
+		session.Stdout = &b
+		//session.Stderr = &b
+		err = session.Run(command)
+		if err != nil {
+			util.Check(fmt.Errorf("error: %w on command: %s, output: %s", err, command, b.String()))
+		}
+	*/
+
+	output, err := session.Output(command)
 	if err != nil {
-		util.Check(fmt.Errorf("error: %w on command: %s, output: %s", err, command, b.String()))
+		util.Check(fmt.Errorf("error: %w on command: %s, output: %s", err, command, string(output)))
 	}
-	return strings.TrimSpace(b.String())
+
+	return strings.TrimSpace(string(output))
 }

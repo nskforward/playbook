@@ -19,7 +19,7 @@ func UserAdd(c *conn.Conn, user string, system bool) {
 	switch c.OS() {
 
 	case conn.DEBIAN, conn.UBUNTU:
-		buf.WriteString("adduser --quiet --group --disabled-password ")
+		buf.WriteString("adduser --quiet --gecos \"\" --disabled-password ")
 		if system {
 			buf.WriteString("--disabled-login --no-create-home ")
 		}
@@ -35,9 +35,8 @@ func UserAdd(c *conn.Conn, user string, system bool) {
 		buf.WriteString(user)
 	}
 
-	buf.WriteString(" && success")
 	output := c.Execute(buf.String())
-	if output != "success" {
+	if output != "" {
 		util.Check(fmt.Errorf("cmd.UserAdd failed: %s", output))
 	}
 }

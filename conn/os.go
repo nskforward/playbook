@@ -44,12 +44,14 @@ func GetOS(client *ssh.Client) OS {
 	output := execute(client, "cat /etc/os-release | grep ^ID=")
 
 	if len(output) == 0 {
-		util.Check(fmt.Errorf("wrong answer on parsing OS info"))
+		util.Check(fmt.Errorf("empty answer on parsing OS"))
 	}
+
 	options := strings.Split(output, "=")
 	if len(options) != 2 {
 		util.Check(fmt.Errorf("wrong answer on parsing OS info: %s", output))
 	}
+
 	return detectOS(strings.Trim(options[1], "\""))
 }
 

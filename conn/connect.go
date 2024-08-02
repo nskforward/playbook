@@ -60,7 +60,7 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 		cfg.Pass = util.AskPassword("password")
 	}
 
-	fmt.Printf("try to ssh connect to %s@%s\n", cfg.User, cfg.Host)
+	fmt.Printf("try to ssh connect to %s@%s:%d\n", cfg.User, cfg.Host, cfg.Port)
 	util.Confitm()
 
 	conn := dial(cfg)

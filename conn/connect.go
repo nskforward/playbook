@@ -2,7 +2,6 @@ package conn
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/nskforward/playbook/util"
 )
@@ -52,9 +51,7 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 	if cfg.Host == "" {
 		util.Check(fmt.Errorf("host must be specified"))
 	}
-	if !strings.Contains(cfg.Host, ":") {
-		cfg.Host += ":22"
-	}
+
 	cfg.User = util.AskStringIfEmpty("user", cfg.User)
 	if cfg.User == "" {
 		util.Check(fmt.Errorf("user must be specified"))

@@ -13,14 +13,15 @@ func UserAddSudo(c *conn.Conn, user string, askPass bool) {
 		util.Check(fmt.Errorf("user name cannot be empty"))
 	}
 	user = strings.ToLower(user)
-	var output string
+	var command string
 	if askPass {
-		output = c.Execute(fmt.Sprintf("echo \"%s ALL=(ALL:ALL) ALL\" | sudo tee /etc/sudoers.d/%s", user, user))
+		command = fmt.Sprintf("echo \"%s ALL=(ALL:ALL) ALL\" | sudo tee /etc/sudoers.d/%s", user, user)
 	} else {
-		output = c.Execute(fmt.Sprintf("echo \"%s ALL=(ALL:ALL) NOPASSWD: ALL\" | sudo tee /etc/sudoers.d/%s", user, user))
+		command = fmt.Sprintf("echo \"%s ALL=(ALL:ALL) NOPASSWD: ALL\" | sudo tee /etc/sudoers.d/%s", user, user)
 	}
 
-	if output != "" {
+	output := c.Execute(command)
+	if output != command {
 		util.Check(fmt.Errorf("cmd.UserSudo failed: %s", output))
 	}
 }

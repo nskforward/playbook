@@ -64,7 +64,8 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 	util.Confitm()
 
 	conn := dial(cfg)
-
+	fmt.Println("----------------------")
 	fmt.Println("successfully connected")
+	fmt.Println("----------------------")
 	return conn
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func dial(cfg Config) *Conn {
-	client, err := ssh.Dial("tcp", cfg.Host, &ssh.ClientConfig{
+	client, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", cfg.Host, cfg.Port), &ssh.ClientConfig{
 		User:            cfg.User,
 		Auth:            []ssh.AuthMethod{detectAuthMethod(cfg.Key, cfg.Pass)},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),

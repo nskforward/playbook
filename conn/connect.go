@@ -13,25 +13,20 @@ type Config struct {
 	Key     string
 	Pass    string
 	HasSudo bool
+	Port    int
 }
 
 type LoginArg func(cfg *Config)
 
-func Host(host string) LoginArg {
-	return func(cfg *Config) {
-		cfg.Host = host
-	}
-}
-
-func User(user string) LoginArg {
-	return func(cfg *Config) {
-		cfg.User = user
-	}
-}
-
 func Key(path string) LoginArg {
 	return func(cfg *Config) {
 		cfg.Key = path
+	}
+}
+
+func Port(port int) LoginArg {
+	return func(cfg *Config) {
+		cfg.Port = port
 	}
 }
 
@@ -41,8 +36,10 @@ func Sudo() LoginArg {
 	}
 }
 
-func Connect(args ...LoginArg) *Conn {
-	var cfg Config
+func Connect(host, user string, args ...LoginArg) *Conn {
+	cfg := Config{
+		Port: 22,
+	}
 	for _, f := range args {
 		f(&cfg)
 	}

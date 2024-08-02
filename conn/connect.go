@@ -38,6 +38,8 @@ func Sudo() LoginArg {
 
 func Connect(host, user string, args ...LoginArg) *Conn {
 	cfg := Config{
+		Host: host,
+		User: user,
 		Port: 22,
 	}
 	for _, f := range args {

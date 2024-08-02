@@ -43,7 +43,7 @@ func (os OS) String() string {
 func GetOS(client *ssh.Client) OS {
 	output := execute(client, "cat /etc/os-release | grep ^ID=")
 
-	if len(output) == 0 {
+	if output == "" {
 		util.Check(fmt.Errorf("empty answer on parsing OS"))
 	}
 

@@ -15,7 +15,7 @@ func execute(client *ssh.Client, command string) string {
 	defer session.Close()
 	var b bytes.Buffer
 	session.Stdout = &b
-	session.Stderr = &b
+	//session.Stderr = &b
 	err = session.Run(command)
 	if err != nil {
 		util.Check(fmt.Errorf("error: %w on command: %s, output: %s", err, command, b.String()))

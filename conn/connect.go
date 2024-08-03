@@ -7,12 +7,11 @@ import (
 )
 
 type Config struct {
-	Host    string
+	Addr    string
 	User    string
 	Key     string
 	Pass    string
 	HasSudo bool
-	Port    int
 	Debug   bool
 }
 
@@ -24,12 +23,6 @@ func Key(path string) LoginArg {
 	}
 }
 
-func Port(port int) LoginArg {
-	return func(cfg *Config) {
-		cfg.Port = port
-	}
-}
-
 func Sudo(cfg *Config) {
 	cfg.HasSudo = true
 }
@@ -38,11 +31,10 @@ func Debug(cfg *Config) {
 	cfg.Debug = true
 }
 
-func Connect(host, user string, args ...LoginArg) *Conn {
+func Connect(addr, user string, args ...LoginArg) *Conn {
 	cfg := Config{
-		Host: host,
+		Addr: addr,
 		User: user,
-		Port: 22,
 	}
 	for _, f := range args {
 		f(&cfg)
@@ -50,8 +42,8 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 
 	fmt.Println("# LOGIN")
 
-	cfg.Host = util.AskStringIfEmpty("host(ip)", cfg.Host)
-	if cfg.Host == "" {
+	cfg.Addr = util.AskStringIfEmpty("host/ip[:port]", cfg.Addr)
+	if cfg.Addr == "" {
 		util.Check(fmt.Errorf("host must be specified"))
 	}
 
@@ -63,7 +55,7 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 		cfg.Pass = util.AskPassword("password")
 	}
 
-	fmt.Printf("try to ssh connect to %s@%s:%d\n", cfg.User, cfg.Host, cfg.Port)
+	fmt.Printf("try to ssh connect to %s@%s\n", cfg.User, cfg.Addr)
 	util.Confitm()
 
 	fmt.Println("*")

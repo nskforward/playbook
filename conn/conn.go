@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nskforward/playbook/util"
+	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -59,4 +60,10 @@ func (c *Conn) Execute(command string) string {
 
 func (c *Conn) OS() OS {
 	return c.os
+}
+
+func (c *Conn) SFTP() *sftp.Client {
+	sftp, err := sftp.NewClient(c.client)
+	util.Check(err)
+	return sftp
 }

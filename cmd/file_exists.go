@@ -7,7 +7,7 @@ import (
 )
 
 func FileExists(c *conn.Conn, path string) bool {
-	cmd := fmt.Sprintf("[ -f %s ] || echo error", path)
+	cmd := fmt.Sprintf("[ -f %s ] || echo false", path)
 	output := c.Execute(cmd)
-	return output != "error"
+	return output != "false"
 }

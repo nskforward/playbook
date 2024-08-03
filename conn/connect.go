@@ -66,10 +66,19 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 	fmt.Printf("try to ssh connect to %s@%s:%d\n", cfg.User, cfg.Host, cfg.Port)
 	util.Confitm()
 
+	fmt.Println("*")
+	fmt.Println("*")
+	fmt.Println("*")
+
 	conn := dial(cfg)
 
 	fmt.Println("--------------------------")
 	fmt.Println("| successfully connected |")
 	fmt.Println("--------------------------")
+
+	fmt.Println("*")
+	fmt.Println("*")
+	fmt.Println("*")
+
 	return conn
 }

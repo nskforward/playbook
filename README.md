@@ -32,7 +32,7 @@ deploy:
 
 deploy.go
 
-```
+```go
 import (
 	"github.com/nskforward/playbook/cmd"
 	"github.com/nskforward/playbook/conn"

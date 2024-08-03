@@ -3,7 +3,6 @@ package conn
 import (
 	"bytes"
 	"fmt"
-	"strings"
 
 	"github.com/nskforward/playbook/util"
 	"golang.org/x/crypto/ssh"
@@ -52,13 +51,13 @@ func getOS(client *ssh.Client) OS {
 		util.Check(fmt.Errorf("wrong answer on parsing OS info: %s", string(output)))
 	}
 
-	release := string(bytes.Trim(options[1], "\" "))
+	release := string(bytes.ToLower(bytes.Trim(options[1], "\" \n")))
 
 	return detectOS(release)
 }
 
-func detectOS(option string) OS {
-	switch strings.ToLower(option) {
+func detectOS(release string) OS {
+	switch release {
 	case "rhel":
 		return RHEL
 	case "fedora":
@@ -71,6 +70,7 @@ func detectOS(option string) OS {
 		return UBUNTU
 	}
 
-	util.Check(fmt.Errorf("unknown os family '%s'", option))
+	util.Check(fmt.Errorf("unknown os family '%s'", release))
+
 	return UNKNOWN
 }

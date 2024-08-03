@@ -30,16 +30,12 @@ func Port(port int) LoginArg {
 	}
 }
 
-func Sudo() LoginArg {
-	return func(cfg *Config) {
-		cfg.HasSudo = true
-	}
+func Sudo(cfg *Config) {
+	cfg.HasSudo = true
 }
 
-func Debug() LoginArg {
-	return func(cfg *Config) {
-		cfg.Debug = true
-	}
+func Debug(cfg *Config) {
+	cfg.Debug = true
 }
 
 func Connect(host, user string, args ...LoginArg) *Conn {
@@ -72,8 +68,8 @@ func Connect(host, user string, args ...LoginArg) *Conn {
 
 	conn := dial(cfg)
 
-	fmt.Println("----------------------")
-	fmt.Println("successfully connected")
-	fmt.Println("----------------------")
+	fmt.Println("--------------------------")
+	fmt.Println("| successfully connected |")
+	fmt.Println("--------------------------")
 	return conn
 }

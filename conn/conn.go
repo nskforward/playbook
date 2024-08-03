@@ -1,6 +1,7 @@
 package conn
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/nskforward/playbook/util"
@@ -34,6 +35,7 @@ func (c *Conn) Execute(command string) string {
 	}
 
 	output, err = execute(c.client, command)
+	output = bytes.TrimSpace(output)
 
 	if c.debug {
 		if len(output) > 0 {

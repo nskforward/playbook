@@ -71,6 +71,10 @@ func main() {
 }
 ```
 
+The "cmd" folder contains the simple low level commands that do exactly one thing
+
+The "scenario" folder contains the complex scenarios that consist of several low level commands
+
 You can explore the folders 'scenario' and 'cmd' to find the supported commands.
 
 Feel free to create an issue if something went wrong or you have a suggestion.

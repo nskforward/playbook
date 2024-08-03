@@ -11,6 +11,7 @@ type Conn struct {
 	client *ssh.Client
 	os     OS
 	sudo   bool
+	debug  bool
 }
 
 func (c *Conn) Close() {
@@ -18,17 +19,39 @@ func (c *Conn) Close() {
 	fmt.Println("# CONNECTION CLOSED")
 }
 
-func (c *Conn) Execute(cmd string) string {
+func (c *Conn) Execute(command string) string {
 	var err error
 	var output []byte
+	var cmd string
 	if c.sudo {
-		output, err = execute(c.client, "sudo "+cmd)
-	} else {
-		output, err = execute(c.client, cmd)
+		command = "sudo " + command
 	}
+
+	if c.debug {
+		fmt.Println("=======================================================================================================")
+		fmt.Println(command)
+		fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	}
+
+	output, err = execute(c.client, command)
+
+	if c.debug {
+		if len(output) > 0 {
+			fmt.Println(string(output))
+		} else {
+			fmt.Println("<empty output>")
+		}
+		fmt.Println("=======================================================================================================")
+	}
+
 	if err != nil {
-		util.Check(fmt.Errorf("failed command: '%s' > error: %w > output: %s", cmd, err, output))
+		if c.debug {
+			util.Check(fmt.Errorf("failed command: '%s' > error: %w", cmd, err))
+		} else {
+			util.Check(fmt.Errorf("failed command: '%s' > error: %w > output: %s", cmd, err, output))
+		}
 	}
+
 	return string(output)
 }
 

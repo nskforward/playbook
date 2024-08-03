@@ -13,6 +13,7 @@ type Config struct {
 	Pass    string
 	HasSudo bool
 	Port    int
+	Debug   bool
 }
 
 type LoginArg func(cfg *Config)
@@ -32,6 +33,12 @@ func Port(port int) LoginArg {
 func Sudo() LoginArg {
 	return func(cfg *Config) {
 		cfg.HasSudo = true
+	}
+}
+
+func Debug() LoginArg {
+	return func(cfg *Config) {
+		cfg.Debug = true
 	}
 }
 

@@ -42,6 +42,7 @@ func (os OS) String() string {
 }
 
 func getOS(client *ssh.Client) OS {
+
 	output, err := execute(client, "cat /etc/os-release | grep ^ID=")
 	if err != nil || len(output) == 0 {
 		util.Check(fmt.Errorf("failed get os command: %w: %s", err, string(output)))
@@ -50,7 +51,10 @@ func getOS(client *ssh.Client) OS {
 	if len(options) != 2 {
 		util.Check(fmt.Errorf("wrong answer on parsing OS info: %s", string(output)))
 	}
-	return detectOS(string(bytes.Trim(options[1], "\"")))
+
+	release := string(bytes.Trim(options[1], "\" "))
+
+	return detectOS(release)
 }
 
 func detectOS(option string) OS {
@@ -67,6 +71,6 @@ func detectOS(option string) OS {
 		return UBUNTU
 	}
 
-	util.Check(fmt.Errorf("unknown os family: %s", option))
+	util.Check(fmt.Errorf("unknown os family '%s'", option))
 	return UNKNOWN
 }

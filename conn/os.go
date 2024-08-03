@@ -1,6 +1,7 @@
 package conn
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 
@@ -40,19 +41,16 @@ func (os OS) String() string {
 	return "unknown"
 }
 
-func GetOS(client *ssh.Client) OS {
-	output := execute(client, "cat /etc/os-release | grep ^ID=")
-
-	if output == "" {
-		util.Check(fmt.Errorf("empty answer on parsing OS"))
+func getOS(client *ssh.Client) OS {
+	output, err := execute(client, "cat /etc/os-release | grep ^ID=")
+	if err != nil || len(output) == 0 {
+		util.Check(fmt.Errorf("failed get os command: %w: %s", err, string(output)))
 	}
-
-	options := strings.Split(output, "=")
+	options := bytes.Split(output, []byte("="))
 	if len(options) != 2 {
-		util.Check(fmt.Errorf("wrong answer on parsing OS info: %s", output))
+		util.Check(fmt.Errorf("wrong answer on parsing OS info: %s", string(output)))
 	}
-
-	return detectOS(strings.Trim(options[1], "\""))
+	return detectOS(string(bytes.Trim(options[1], "\"")))
 }
 
 func detectOS(option string) OS {

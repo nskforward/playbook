@@ -22,7 +22,7 @@ func UserAddSudo(c *conn.Conn, user string, askPass bool) {
 
 	output := c.Execute(command)
 	if output != command {
-		util.Check(fmt.Errorf("cmd.UserSudo failed: %s", output))
+		util.Check(fmt.Errorf("fail cmd.UserAddSudo: %s", output))
 	}
 }
 

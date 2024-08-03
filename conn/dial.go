@@ -15,9 +15,11 @@ func dial(cfg Config) *Conn {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	})
 	util.Check(err)
-	os := GetOS(client)
+
+	os := getOS(client)
 	fmt.Println("detected os family:", os)
-	return &Conn{client: client, os: os, sudo: cfg.HasSudo}
+
+	return &Conn{client: client, sudo: cfg.HasSudo, os: os}
 }
 
 func detectAuthMethod(keyPath, pass string) ssh.AuthMethod {

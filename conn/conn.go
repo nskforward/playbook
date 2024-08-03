@@ -3,6 +3,7 @@ package conn
 import (
 	"fmt"
 
+	"github.com/nskforward/playbook/util"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -17,12 +18,18 @@ func (c *Conn) Close() {
 	fmt.Println("# CONNECTION CLOSED")
 }
 
-func (c *Conn) Execute(cmd string) (output string) {
+func (c *Conn) Execute(cmd string) string {
+	var err error
+	var output []byte
 	if c.sudo {
-		return execute(c.client, "sudo "+cmd)
+		output, err = execute(c.client, "sudo "+cmd)
 	} else {
-		return execute(c.client, cmd)
+		output, err = execute(c.client, cmd)
 	}
+	if err != nil {
+		util.Check(fmt.Errorf("failed command: '%s' > error: %w > output: %s", cmd, err, output))
+	}
+	return string(output)
 }
 
 func (c *Conn) OS() OS {

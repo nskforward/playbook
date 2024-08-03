@@ -1,7 +1,12 @@
 # playbook
 Automation of remote server commands over SSH
 
-## example
+## Installation
+```
+go get -u github.com/nskforward/playbook
+```
+
+## Example
 
 You can create a complex deploy script on Go using the following structure as suggestion
 

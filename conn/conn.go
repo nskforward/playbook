@@ -24,7 +24,6 @@ func (c *Conn) Close() {
 func (c *Conn) Execute(command string) string {
 	var err error
 	var output []byte
-	var cmd string
 	if c.sudo {
 		command = "sudo " + command
 	}
@@ -49,9 +48,9 @@ func (c *Conn) Execute(command string) string {
 
 	if err != nil {
 		if c.debug {
-			util.Check(fmt.Errorf("failed command: '%s' > error: %w", cmd, err))
+			util.Check(fmt.Errorf("command: '%s' > error: %w", command, err))
 		} else {
-			util.Check(fmt.Errorf("failed command: '%s' > error: %w > output: %s", cmd, err, output))
+			util.Check(fmt.Errorf("command: '%s' > error: %w > output: %s", command, err, output))
 		}
 	}
 

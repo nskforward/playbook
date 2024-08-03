@@ -2,6 +2,7 @@ package conn
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nskforward/playbook/util"
 )
@@ -55,11 +56,13 @@ func Connect(addr, user string, args ...LoginArg) *Conn {
 		cfg.Pass = util.AskPassword("password")
 	}
 
+	if !strings.Contains(cfg.Addr, ":") {
+		cfg.Addr = cfg.Addr + ":22"
+	}
+
 	fmt.Printf("try to ssh connect to %s@%s\n", cfg.User, cfg.Addr)
 	util.Confitm()
 
-	fmt.Println("*")
-	fmt.Println("*")
 	fmt.Println("*")
 
 	conn := dial(cfg)
@@ -68,8 +71,6 @@ func Connect(addr, user string, args ...LoginArg) *Conn {
 	fmt.Println("| successfully connected |")
 	fmt.Println("--------------------------")
 
-	fmt.Println("*")
-	fmt.Println("*")
 	fmt.Println("*")
 
 	return conn

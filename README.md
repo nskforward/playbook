@@ -1,4 +1,5 @@
 # playbook
+[![Go Reference](https://pkg.go.dev/badge/github.com/nskforward/playbook?status.svg)](https://pkg.go.dev/github.com/nskforward/playbook?tab=doc)
 Automation of remote server commands over SSH
 
 > [!WARNING]

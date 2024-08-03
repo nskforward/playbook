@@ -41,7 +41,7 @@ func (c *Conn) Execute(command string) string {
 		if len(output) > 0 {
 			fmt.Println(string(output))
 		} else {
-			fmt.Println("<empty output>")
+			fmt.Println("<empty>")
 		}
 		fmt.Println("=======================================================================================================")
 	}

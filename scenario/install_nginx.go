@@ -7,10 +7,10 @@ import (
 	"github.com/nskforward/playbook/conn"
 )
 
-func InstallFail2Ban(c *conn.Conn) {
-	fmt.Println("# INSTALL FAIL2BAN")
+func InstallNginx(c *conn.Conn) {
+	fmt.Println("# INSTALL NGINX")
 
 	cmd.Apt(c, cmd.Update)
-	cmd.Apt(c, cmd.Install, "fail2ban")
+	cmd.Apt(c, cmd.Install, "nginx")
 	fmt.Println("<-- ok")
 }

@@ -15,6 +15,7 @@ var (
 	Restart SystemctlAction = "restart"
 	Enable  SystemctlAction = "enable"
 	Disable SystemctlAction = "disable"
+	Reload  SystemctlAction = "reload"
 )
 
 func Systemctl(c *conn.Conn, service string, action SystemctlAction) {

@@ -1,6 +1,6 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/nskforward/playbook?status.svg)](https://pkg.go.dev/github.com/nskforward/playbook?tab=doc)
 
-# playbook
+# Playbook
 
 Automation of remote server commands over SSH
 
@@ -14,7 +14,7 @@ go get -u github.com/nskforward/playbook
 
 ## Example
 
-You can create a complex deploy script on Go using the following structure as suggestion
+You can create a complex deployment script using the following Golang project structure
 
 ```
 /root

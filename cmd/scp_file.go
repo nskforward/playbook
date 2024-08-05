@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -9,6 +10,8 @@ import (
 )
 
 func ScpFile(c *conn.Conn, localFilePath, remoteFilePath string) {
+	fmt.Println("uploading", localFilePath, "...")
+
 	sftp := c.SFTP()
 	defer sftp.Close()
 

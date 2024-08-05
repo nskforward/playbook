@@ -8,13 +8,14 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func ScpDir(c *conn.Conn, localDirPath, remoteDirPath string) {
+func ScpDir(c *conn.Conn, localDirPath, remoteDirPath, owner string) {
 
 	items, err := os.ReadDir(localDirPath)
 	util.Check(err)
 
 	if !DirExists(c, remoteDirPath) {
 		DirMake(c, false, remoteDirPath)
+		Chown(c, true, owner, owner, remoteDirPath)
 	}
 
 	for _, item := range items {
@@ -23,7 +24,7 @@ func ScpDir(c *conn.Conn, localDirPath, remoteDirPath string) {
 		dst := filepath.Join(remoteDirPath, item.Name())
 
 		if item.IsDir() {
-			ScpDir(c, src, dst)
+			ScpDir(c, src, dst, owner)
 			continue
 		}
 		if item.Type().IsRegular() {

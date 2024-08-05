@@ -16,6 +16,7 @@ func ScpDir(c *conn.Conn, localDirPath, remoteDirPath, owner string) {
 	if !DirExists(c, remoteDirPath) {
 		DirMake(c, false, remoteDirPath)
 		Chown(c, true, owner, owner, remoteDirPath)
+		Chmod(c, true, remoteDirPath, util.NewPerm(7, 7, 0))
 	}
 
 	for _, item := range items {

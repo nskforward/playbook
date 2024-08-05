@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/nskforward/playbook/cmd"
@@ -11,7 +12,7 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func SystemdUnitCreate(c *conn.Conn, name, exeFilePath, envFilePath, user, group string) {
+func SystemdUnitCreate(c *conn.Conn, name, exeFilePath, envFilePath, user, group string, maxfd int) {
 	fmt.Println("# CREATE SYSTEMD UNIT")
 
 	if exeFilePath == "" {
@@ -34,11 +35,11 @@ func SystemdUnitCreate(c *conn.Conn, name, exeFilePath, envFilePath, user, group
 	fmt.Println("<-- does not exist")
 
 	fmt.Println("--> create file")
-	cmd.FileWrite(c, false, path, getUnit(exeFilePath, envFilePath, user, group))
+	cmd.FileWrite(c, false, path, getUnit(exeFilePath, envFilePath, user, group, maxfd))
 	fmt.Println("<-- ok")
 }
 
-func getUnit(exeFilePath, envFilePath, user, group string) string {
+func getUnit(exeFilePath, envFilePath, user, group string, maxFd int) string {
 	var buf bytes.Buffer
 	buf.WriteString("[Unit]\n")
 	buf.WriteString("After=multi-user.target\n\n")
@@ -62,6 +63,11 @@ func getUnit(exeFilePath, envFilePath, user, group string) string {
 	if group != "" {
 		buf.WriteString("Group=")
 		buf.WriteString(group)
+		buf.WriteString("\n")
+	}
+	if maxFd > 0 {
+		buf.WriteString("LimitNOFILE=")
+		buf.WriteString(strconv.Itoa(maxFd))
 		buf.WriteString("\n")
 	}
 	buf.WriteString("\n")

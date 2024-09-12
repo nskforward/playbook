@@ -7,7 +7,7 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func UserAddGroup(c *conn.Conn, group, user string) bool {
+func UserAddGroup(c *conn.Conn, user, group string) bool {
 	if UserHasGroup(c, user, group) {
 		return false
 	}

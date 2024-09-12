@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"bytes"
@@ -9,7 +9,11 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func UserAdd(c *conn.Conn, user string, system bool) {
+func UserCreate(c *conn.Conn, user string, system bool) {
+	if UserExists(c, user) {
+		return
+	}
+
 	if user == "" {
 		util.Check(fmt.Errorf("user name cannot be empty"))
 	}
@@ -37,6 +41,6 @@ func UserAdd(c *conn.Conn, user string, system bool) {
 
 	output := c.Execute(buf.String())
 	if output != "" {
-		util.Check(fmt.Errorf("cmd.UserAdd failed: %s", output))
+		util.Check(fmt.Errorf("cmd.UserCreate failed: %s", output))
 	}
 }

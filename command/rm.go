@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"fmt"
@@ -9,4 +9,8 @@ import (
 
 func FileDelete(c *conn.Conn, path ...string) {
 	c.Execute(fmt.Sprintf("rm %s", strings.Join(path, " ")))
+}
+
+func DirDelete(c *conn.Conn, path string) {
+	c.Execute(fmt.Sprintf("rm -rf %s", path))
 }

@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"bytes"
@@ -8,20 +8,18 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func Chown(c *conn.Conn, recursive bool, user, group, path string) {
+func Chmod(c *conn.Conn, recursive bool, path string, perm util.Perm) {
 	var buf bytes.Buffer
-	buf.WriteString("chown ")
+	buf.WriteString("chmod ")
 	if recursive {
 		buf.WriteString("-R ")
 	}
-	buf.WriteString(user)
-	buf.WriteByte(':')
-	buf.WriteString(group)
+	buf.WriteString(perm.String())
 	buf.WriteByte(' ')
 	buf.WriteString(path)
 
 	output := c.Execute(buf.String())
 	if output != "" {
-		util.Check(fmt.Errorf("cmd.Chown failed: %s", output))
+		util.Check(fmt.Errorf("command.Chmod failed: %s", output))
 	}
 }

@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"fmt"
@@ -9,6 +9,10 @@ import (
 )
 
 func UserAddSudo(c *conn.Conn, user string, askPass bool) {
+	if UserHasSudo(c, user) {
+		return
+	}
+
 	if user == "" {
 		util.Check(fmt.Errorf("user name cannot be empty"))
 	}

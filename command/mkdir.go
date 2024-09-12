@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func DirMake(c *conn.Conn, createParent bool, path string) {
+func DirCreate(c *conn.Conn, createParent bool, path string) {
 	var buf bytes.Buffer
 	buf.WriteString("mkdir ")
 	if createParent {
@@ -17,6 +17,6 @@ func DirMake(c *conn.Conn, createParent bool, path string) {
 	buf.WriteString(path)
 	output := c.Execute(buf.String())
 	if output != "" {
-		util.Check(fmt.Errorf("cmd.DirMake failed: %s", output))
+		util.Check(fmt.Errorf("cmd.DirCreate failed: %s", output))
 	}
 }

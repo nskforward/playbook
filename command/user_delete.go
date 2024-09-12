@@ -1,4 +1,4 @@
-package cmd
+package command
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/nskforward/playbook/util"
 )
 
-func UserDel(c *conn.Conn, user string) {
+func UserDelete(c *conn.Conn, user string) {
 	var output string
 
 	switch c.OS() {

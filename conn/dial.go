@@ -19,7 +19,7 @@ func dial(cfg Config) *Conn {
 	os := getOS(client)
 	fmt.Println("detected os family:", os)
 
-	return &Conn{client: client, sudo: cfg.HasSudo, debug: cfg.Debug, os: os}
+	return &Conn{client: client, sudo: cfg.HasSudo, debug: cfg.Debug, os: os, user: cfg.User}
 }
 
 func detectAuthMethod(keyPath, pass string) ssh.AuthMethod {

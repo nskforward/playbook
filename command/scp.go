@@ -45,6 +45,7 @@ func ScpDir(c *conn.Conn, localDirPath, remoteDirPath string) {
 
 	if !DirExists(c, remoteDirPath) {
 		DirCreate(c, false, remoteDirPath)
+		Chown(c, true, c.User(), c.User(), remoteDirPath)
 	}
 
 	for _, item := range items {

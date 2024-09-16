@@ -10,6 +10,7 @@ import (
 )
 
 type Conn struct {
+	user   string
 	client *ssh.Client
 	os     OS
 	sudo   bool
@@ -59,6 +60,10 @@ func (c *Conn) Execute(command string) string {
 
 func (c *Conn) OS() OS {
 	return c.os
+}
+
+func (c *Conn) User() string {
+	return c.user
 }
 
 func (c *Conn) SFTP() *sftp.Client {

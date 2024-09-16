@@ -11,6 +11,10 @@ import (
 )
 
 func ScpFile(c *conn.Conn, localFilePath, remoteFilePath string) bool {
+	if filepath.Base(localFilePath) == ".DS_Store" {
+		return false
+	}
+
 	if FilesEqual(c, localFilePath, remoteFilePath) {
 		return false
 	}

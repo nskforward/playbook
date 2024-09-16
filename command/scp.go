@@ -34,15 +34,13 @@ func ScpFile(c *conn.Conn, localFilePath, remoteFilePath string) bool {
 	return true
 }
 
-func ScpDir(c *conn.Conn, localDirPath, remoteDirPath, owner string) {
+func ScpDir(c *conn.Conn, localDirPath, remoteDirPath string) {
 
 	items, err := os.ReadDir(localDirPath)
 	util.Check(err)
 
 	if !DirExists(c, remoteDirPath) {
 		DirCreate(c, false, remoteDirPath)
-		Chown(c, true, owner, owner, remoteDirPath)
-		Chmod(c, true, remoteDirPath, util.NewPerm(7, 7, 0))
 	}
 
 	for _, item := range items {
@@ -51,7 +49,7 @@ func ScpDir(c *conn.Conn, localDirPath, remoteDirPath, owner string) {
 		dst := filepath.Join(remoteDirPath, item.Name())
 
 		if item.IsDir() {
-			ScpDir(c, src, dst, owner)
+			ScpDir(c, src, dst)
 			continue
 		}
 		if item.Type().IsRegular() {

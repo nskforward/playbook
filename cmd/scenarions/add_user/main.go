@@ -7,17 +7,14 @@ import (
 	"github.com/nskforward/playbook"
 )
 
-const (
-	userToCreate = "sgorbachev"
-)
-
 var (
-	hosts     = []string{"10.48.173.63"}
-	publicKey = playbook.GetPublicKey(userToCreate)
+	hosts = []string{"10.48.173.63"}
 )
 
 func main() {
 	privateKey := playbook.GetLocalFile(os.Getenv("SSH_PRIVATE"))
+	userToCreate := playbook.AskStr("user to create", false)
+	publicKey := playbook.GetPublicKey(userToCreate)
 
 	for _, host := range hosts {
 		conn := playbook.Connect(

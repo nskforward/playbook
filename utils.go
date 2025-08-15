@@ -22,3 +22,11 @@ func GeneratePassword(prefix string, length int) string {
 	}
 	return strings.Join([]string{prefix, string(generated)}, "")
 }
+
+func GetPublicKey(user string) string {
+	data, err := os.ReadFile(fmt.Sprintf("users/%s", user))
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
+}

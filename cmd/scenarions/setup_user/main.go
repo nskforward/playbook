@@ -33,7 +33,7 @@ func main() {
 	if conn.Command().FileExist(authorizedKeys) {
 		fmt.Println("+ file already exists:", authorizedKeys)
 	} else {
-		conn.Command().AppendToFile(authorizedKeys, pubKey)
+		conn.Command().AppendToFile(authorizedKeys, string(pubKey))
 		fmt.Println("+ ssh key registered:", authorizedKeys)
 	}
 
@@ -42,6 +42,6 @@ func main() {
 	conn.Command().ChangeOwner(fmt.Sprintf("%s:%s", newUser, newUser), sshDir)
 	fmt.Println("+ added permissions")
 
-	conn.Command().AppendToFile(fmt.Sprintf("/etc/sudoers.d/%s", newUser), []byte(fmt.Sprintf("%s ALL=(ALL) NOPASSWD: ALL", newUser)))
+	conn.Command().AppendToFile(fmt.Sprintf("/etc/sudoers.d/%s", newUser), fmt.Sprintf("%s ALL=(ALL) NOPASSWD: ALL", newUser))
 	fmt.Println("+ added to sudo")
 }

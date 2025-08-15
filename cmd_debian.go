@@ -15,6 +15,33 @@ func NewDebianCommand(client *ssh.Client) Command {
 	return &DebianCommand{client}
 }
 
+func (cmd *DebianCommand) AddSSHKey(user, publicKey string) {
+	sshDir := fmt.Sprintf("/home/%s/.ssh", user)
+	if cmd.CreateDir(sshDir) {
+		fmt.Println("+ .ssh dir created:", sshDir)
+	} else {
+		fmt.Println("+ .ssh dir already exists:", sshDir)
+	}
+
+	authorizedKeys := fmt.Sprintf("%s/authorized_keys", sshDir)
+
+	if cmd.FileExist(authorizedKeys) {
+		fmt.Println("+ file already exists:", authorizedKeys)
+	} else {
+		cmd.AppendToFile(authorizedKeys, publicKey)
+		fmt.Println("+ ssh key registered:", authorizedKeys)
+	}
+
+	cmd.ChangePerm("700", sshDir)
+	cmd.ChangePerm("600", authorizedKeys)
+	cmd.ChangeOwner(fmt.Sprintf("%s:%s", user, user), sshDir)
+	fmt.Println("+ added permissions")
+}
+
+func (cmd *DebianCommand) AddUserToSudo(user string) {
+	cmd.AppendToFile(fmt.Sprintf("/etc/sudoers.d/%s", user), fmt.Sprintf("%s ALL=(ALL) NOPASSWD: ALL", user))
+}
+
 func (cmd *DebianCommand) ChangePassword(user string, password string) {
 	command := fmt.Sprintf("sudo sh -c \"echo '%s' | passwd %s --stdin\"", password, user)
 	_, err := execute(cmd.client, command, true)
@@ -69,13 +96,13 @@ func (cmd *DebianCommand) DirExists(path string) bool {
 	return !bytes.Equal(output, []byte("false"))
 }
 
-func (cmd *DebianCommand) AppendToFile(path string, data []byte) {
+func (cmd *DebianCommand) AppendToFile(path, data string) {
 	if cmd.FileExist(path) {
 		fmt.Println("+ file already exists:", path)
 		return
 	}
 	cmd.CreateFile(path)
-	command := fmt.Sprintf("sudo sh -c \"echo '%s' > %s\"", string(data), path)
+	command := fmt.Sprintf("sudo sh -c \"echo '%s' > %s\"", data, path)
 	_, err := execute(cmd.client, command, true)
 	Catch(err, "cannot append data to file")
 }

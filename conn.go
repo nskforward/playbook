@@ -3,6 +3,7 @@ package playbook
 import (
 	"errors"
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 
@@ -75,7 +76,7 @@ func (conn *Conn) detectOSRelease() {
 		conn.cmd = NewDebianCommand(conn.client)
 		return
 	}
-	if slices.Contains(release, "rhel") {
+	if slices.Contains(release, "rhel") || slices.Contains(release, "fedora") {
 		fmt.Println("os family: rhel")
 		conn.cmd = NewRHELCommand(conn.client)
 		return
@@ -108,9 +109,11 @@ func WithPass(pass string) Opt {
 	}
 }
 
-func WithKey(privateKey []byte) Opt {
+func WithKey(privateKey string) Opt {
 	return func(conn *Conn) {
-		signer, err := ssh.ParsePrivateKey(privateKey)
+		data, err := os.ReadFile(privateKey)
+		Catch(err, "cannot read the private key file")
+		signer, err := ssh.ParsePrivateKey(data)
 		Catch(err, "cannot parse private key")
 		conn.authMethod = append(conn.authMethod, ssh.PublicKeys(signer))
 	}
